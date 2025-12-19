@@ -20,6 +20,7 @@ const NAV = [
         },
         text: "Guide",
         link: "/guide",
+        activeMatch: "^/guide/"
     },
     {
         text: "Reference",
