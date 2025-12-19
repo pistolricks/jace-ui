@@ -1,7 +1,15 @@
 import {defineConfig} from "@solidjs/start/config";
-import {withSolidBase} from "@kobalte/solidbase/config";
+import {createWithSolidBase, defineTheme} from "@kobalte/solidbase/config";
+import defaultTheme from "@kobalte/solidbase/default-theme";
+import tailwindcss from '@tailwindcss/vite';
+
 import {DefaultThemeSidebarItem} from "@kobalte/solidbase/default-theme";
 import {SidebarConfig} from "@kobalte/solidbase/client";
+
+
+
+
+
 
 const NAV = [
     {
@@ -34,11 +42,21 @@ const SIDEBAR_ITEMS: SidebarConfig<DefaultThemeSidebarItem> | undefined = [
             {title: "About", link: "/about", status: "new"}
         ]
     }
-] as const;
-export default defineConfig(withSolidBase(
+];
+
+const customTheme =  defineTheme({
+    componentsPath: import.meta.resolve("./src/jace-theme"),
+    extends: defaultTheme,
+});
+
+export default defineConfig(
+    createWithSolidBase(customTheme)(
     // SolidStart config
     {
         ssr: true,
+        vite: {
+          plugins: [tailwindcss()]
+        },
         server: {
             prerender: {
                 crawlLinks: true
@@ -48,11 +66,15 @@ export default defineConfig(withSolidBase(
     // SolidBase config
     {
         title: "JGL",
-        titleTemplate: ":title - Jace Group",
-        description: "Jace Group UI",
-        logo: "",
+        titleTemplate: "%s - JGL",
+        description: "Bat Computer Operating System",
+
+
+
+
 
         themeConfig: {
+
             nav: NAV,
             socialLinks: {
                 github: "https://github.com/your-repo",
@@ -64,7 +86,8 @@ export default defineConfig(withSolidBase(
                     label: "Logo label"
                 },
             },
-            sidebar: SIDEBAR_ITEMS
+
+            sidebar: SIDEBAR_ITEMS,
         }
     }
 ));
